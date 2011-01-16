@@ -13,6 +13,8 @@ from google.appengine.ext import db
 from google.appengine.ext.webapp import util
 from google.appengine.api import memcache
 
+import entrez
+
 logging.getLogger().setLevel(logging.DEBUG)
 
 # Models
@@ -121,21 +123,36 @@ class IndexHandler(webapp.RequestHandler):
         path = os.path.join(os.path.dirname(__file__), "templates/index.html")
         args = dict()
         self.response.out.write(template.render(path, args))
-# 
-# class AjaxHandler(BaseHandler):
-#     """ Base AJAX request handler, requires logged-in user and AJAX request header """
-#     def process(self):
-#         raise NotImplementedError()
-#     
-#     def get(self):
-#         # must be logged in
-#         if self.current_user is None:
-#             return self.error(403)
-#         # must be ajax request
-#         if 'X-Requested-With' not in self.request.headers.keys() or self.request.headers['X-Requested-With'] != 'XMLHttpRequest':
-#             return self.error(403)
-#         self.process()
-# 
+
+class AjaxHandler(webapp.RequestHandler):
+    """ Base AJAX request handler, requires logged-in user and AJAX request header """
+    def process(self):
+        raise NotImplementedError()
+    
+    def get(self):
+        # must be logged in
+        #if self.current_user is None:
+        #    return self.error(403)
+        # must be ajax request
+        #if 'X-Requested-With' not in self.request.headers.keys() or self.request.headers['X-Requested-With'] != 'XMLHttpRequest':
+        #    return self.error(403)
+        self.process()
+
+class AjaxSearchPubmedHandler(AjaxHandler):
+    def process(self):
+        query = self.request.get("q")
+        if not query:
+            self.response.out.write('')
+        else:
+            handle = entrez.esearch(db="pubmed", term=query)
+            record = entrez.read(handle)
+            handle = entrez.efetch(db="pubmed", id=record["IdList"], rettype="xml")
+            print handle.read()
+            #record = entrez.read(handle)
+            #self.response.out.write(record)
+            #self.response.out.write(handle.read())
+            #self.response.out.write(simplejson.dumps({ "pmids": record["IdList"] }))
+
 # class AjaxNextEventHandler(AjaxHandler):
 #     def get_user_info(self):
 #         # TODO: get and set UserProfile for the current_user and friends in the friend list
@@ -205,7 +222,7 @@ class IndexHandler(webapp.RequestHandler):
 def main():
     application = webapp.WSGIApplication([
                         ('/', IndexHandler),
-                        # ('/ajax/next_event', AjaxNextEventHandler),
+                        ('/ajax/search', AjaxSearchPubmedHandler),
                     ], debug=True)
     wsgiref.handlers.CGIHandler().run(application)
 
