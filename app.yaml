@@ -3,12 +3,19 @@ version: 1
 runtime: python
 api_version: 1
 
-builtins:
-- datastore_admin: on
+# builtins:
+# - datastore_admin: on
+
+# default_expiration: "1d"
 
 handlers:
 - url: /static
   static_dir: static
+
+- url: /robots.txt
+  static_files: static/robots.txt
+  upload: static/robots.txt
+  secure: optional
 
 - url: /xd_receiver.htm
   static_files: static/xd_receiver.html
@@ -18,5 +25,21 @@ handlers:
   static_files: static/img/favicon.ico
   upload: static/img/favicon.ico
 
-- url: /.*
+# - url: /remote_api
+#   script: "$PYTHON_LIB/google/appengine/ext/remote_api/handler.py"
+#   login: admin
+#   secure: optional
+
+- url: /api/process_queue
+  script: "main.py"
+  secure: optional
+
+- url: /_ah/queue/default
+  script: "main.py"
+  login: admin
+  secure: optional
+
+- url: .*
   script: main.py
+  secure: optional
+  #login: admin
