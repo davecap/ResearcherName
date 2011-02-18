@@ -1,0 +1,27 @@
+# UserMedlinePublication
+
+user_id
+pmid
+
+
+### MedlineAuthorshipRequest
+
+from_user_id
+pmid
+sent_to
+sent_on
+verified_on
+
+Ex: To get verified, a user must add a publication to their list and be authorized by the corresponding author, who MUST be a registered user
+	- User wants to add a publication to their list
+		- user who isn't the corresponding author -> corresponding author email address
+
+	1) get paper for PMID
+	2) find verified authors for that PMID
+		2A) for each verified author, add a MedlineAuthorshipRequestNotification
+	3) find corresponding author for that PMID
+	4) send them an invitation+request email
+		- <name> wants to become a verified scientist. They need you to authorize them as an author of the following publication
+				<publication>
+		- As the corresponding author of this publication, you are already a verified scientist. Please log in to authorize <name>.
+

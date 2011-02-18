@@ -1,0 +1,63 @@
+For now, peer reviewed publications will come from MEDLINE.
+
+# MedlinePublication
+
+PMID: 
+	title: ''
+	authors: []
+	affiliation: ''	# first author affiliation
+	issn: ''
+	nlmuniqueid: ''
+	journal: ''
+	medlineta: ''
+	isoabbreviation: ''
+	year: ''
+	volume: ''
+	issue: ''
+	doi: ''
+	status: ''
+	retracted: boolean
+	date_created: timestamp
+	date_completed: timestamp
+	date_revised: timestamp
+	
+
+# Methods
+
+	find_publications_by_corresponding_author_email(email)
+		search local DB for papers with email, field should be indexed on a denormalized table
+
+################### REFACTOR
+
+	search_pubmed(query, year_limit="2000", author_filter=None)
+		result_publications = { <pmid>: publication }
+		
+		look in query cache (memcache) for key=query
+
+		- if the pmids are cached then we probably have the publication data locally
+			for each pmid:
+				p = get_publication_for_pmid(pmid)
+				if not p:
+					missing_publications.append(pmid)
+				else:
+					result_publications[pmid] = p
+			xml_results <- Entrez.search(missing_publications.join(" "))
+		- else
+			xml_results <- Entrez.search(query)
+			parse pmids from xml_results
+			for each xml result:
+				p = get_publication_for_pmid(pmid)
+				if not p:
+					p = new publication(xml_data)
+				result_publications[pmid] = p
+			publications.append(p)
+			store pmids in query cache (memcache)
+
+
+	get_publication_for_pmid(pmid)
+		- look in local DB for publication with pmid
+		- return publication object		
+
+	get_query_cache(query)
+	set_query_cache(query)
+

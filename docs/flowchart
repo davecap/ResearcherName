@@ -1,0 +1,107 @@
+Main website
+
+# SIGNUP
+
+To sign-up, enter your email address:
+	<signup_email>
+
+	POST:
+		if <signup_email> in emails:
+			error: email already signed-up
+					click here to login -> LOGIN
+					forgot your password? -> FORGOT PASSWORD
+		else:
+			- send an invitation email with secret key to verify the email address
+
+# LOGIN
+	
+	<login_email> / Any email you have registered with us will work
+	<login_password>
+	forgot your password?
+	
+	POST:
+		validate login credentials
+		redirect to PROFILE
+
+# PROFILE
+
+	- first/middle/last name
+	- publications
+	- affiliations
+	- services
+
+
+# EMAIL/INVITE VALIDATION
+
+	- validate the secret key
+
+	Step 1: Name, Password and other email addresses you may use
+
+	- Full name
+	- Password + verify
+
+	- Other email addresses that you use 
+		(why? if you are a corresponding author on a published paper, this is how we will validate the authorship. We only use your primary email address to contact you)
+	
+	POST (next):
+		for each address, make sure it is valid.
+		+ Add Email Address
+			[_____________] (OK) or (INVALID) on entry
+		send email validation to all addresses on click
+
+	[Next: Add your publications] -> Step 2
+
+	Step 2: Add Your Publications
+
+		You are the corresponding author on these papers:
+						 
+					     [ADD ALL]
+			<citation 1> [ADD]
+				...
+
+
+		Search PubMed: _____________ [SEARCH]
+				
+			On [SEARCH] -> Ajax search pubmed for PMIDs, filter by author last names.
+
+			<citation 1> [ADD]
+			<citation 2> [ADD]
+			<citation 3> [ADD]
+				...
+		
+		Can't find a publication? -> cant_find_a_publication
+	
+		Your Publications:
+
+		<added publication> <status: pending authorization>
+
+	Step 3: Complete Your Profile & Add Services
+	
+	- process all user's publications
+		- attempt pre-validation by affiliation (by all validated email addresses)
+		- if user is still invalid, send them to validation by indirect-affiliation
+
+pre-validation by affiliation algorithm
+	- input: email address that has already been validated (email+key sent and received)
+	- Find all affiliations by the (verified) email address
+	- if affiliations found
+		- show all possible publications
+		- ask user to add the publications to their list
+		- set user to verified
+		- show all requests from other people (see: validation by indirect-affiliation)			- for each Request(with any of the user's email addresses) show: Request Response View
+				- if R.publication not in user's collection
+					- are you an author of this paper? yes/no
+				- "Some Person" with email address some.person@school.edu is claiming authorship of this publication
+					- accept / deny
+					- set other user to verified
+
+validation by indirect-affiliation
+	- User must have at least 1 publication
+	- Find corresponding authors from each publication and assemble into unique list
+	- For each corresponding email address:
+		- Create new Request(user, corresponding email address, publication ID)
+		- if user(corresponding email address) isn't signed up:
+			- Send Invitation to the email address asking them to sign up and reply to the request so that both can become verified
+	- User has to wait for the other scientists to sign-up and/or respond to the request
+
+

@@ -1,0 +1,22 @@
+I want to model this in a very modular way so that I can write simple, encapsulated web servers for each system... they essentially operate on their own.
+
+UserSubsystem
+	This is where user data is stored for all users of the system. It may store references to the Activity and Publication subsystems.
+	- Invitations
+	- Requests
+
+PublicationSubsystem
+	This is the subsystem used for containing MEDLINE publications. For now we only store MEDLINE data, but in the future we might use other data for validation.
+	* THIS IS THE PRIMARY DATA SOURCE FOR VALIDATION *
+	
+	- MongoDB
+	- Baseline importer
+	- Autoupdate code (low priority)
+	- Pubmed search system
+	- Local indexing
+	- Unique IDs
+
+ActivitySubsystem
+	This is the logging system that allows us to trace user activity. The important thing here is to be able to keep track of who invited who, etc...
+	
+	TODO: is this necessary?

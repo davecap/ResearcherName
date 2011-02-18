@@ -1,0 +1,33 @@
+Invitations can come from the system or from another user. The whole purpose is to get the person to be aware or the service.
+Invitation emails should contain informative stuff about the service as well as papers where the target email is a corresponding author.
+
+# send this task to the GAE Queue
+send_invitation(from_user_id, to_email)
+	- if to_email has already been sent an invitation, ignore this task
+		- log as an error
+
+	- find publications where to_email is corresponding_email
+	- find information for from_user_id to include in template
+	- fill invitation template
+	- send
+
+user gets email with a link to join researcher.name
+if they click the link and sign up, their email address is already verified.
+
+/join?ik=INVITATION_KEY
+
+name: _____
+email address: (set from the invitation object)
+password: ____
+password verify: ____
+(hidden) invitation_key
+
+After they complete the sign-up, the system will look for invitations with invitation_key... and set to accepted.
+
+### Invitation Model
+
+from_user_id = String?
+to_email = String
+sent_on = timestamp
+invitation_key = String
+accepted = Bool

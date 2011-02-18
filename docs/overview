@@ -1,0 +1,21 @@
+This is a platform for science on the web. The idea being that every user has an activity stream and you can follow any other researcher on the network.
+The core of the system is the verified scientist layer. This is an OAuth server full of users who are verified scientists.
+
+The researcher can propose their own <name> which will be used as their OpenID. They can then log in to other services that require validated scientists or link other services to their researcher.name account.
+
+Online profile address: researcher.name/<name>
+Users can login with any verified email address under their account.
+
+From here, other systems based on this platform can be created which link up this OpenID account.
+
+	- Formal peer review (???)
+		- PLoS backend?
+	- Informal peer review (blogs, microblogs)
+	- Data storage (PDB, GEO)
+		- Anything linked to PMID can be used right away
+		- Anything with a valid email address can be associated with the researcher of the same email address
+	- Reference management
+	- Sharing and collaboration
+
+The core OAuth profile can then be used to build credit on a verified online persona. This becomes your online resume as a scientist.
+You can also follow other researchers to stay up to date.

@@ -1,0 +1,24 @@
+How can I implement a peer review system on top of the valid scientist author database?
+- use the OpenID/OAuth/Salmon?
+
+What is the simplest peer review system?
+
+- Author A writes publication PA
+- Author B writes publication PB in response to PA (this is a review)
+
+Publications:
+	- Have 1+ authors
+	- May be in response to 1+ Publications
+	- Have 0+ references
+	- Have revisions (each revision is independent)
+	- May be public or private
+
+A little more complicated, with Requests For Review (RFRs)
+
+- Author A writes publication PA, revision 1 -> PA1
+- Author A sends a Request For Review (RFR) to author B
+	- RFR(A,B, PA1) status: sent
+- Author B accepts RFR(A,B,PA1) status: accepted
+- Author B writes publication PB, revision 1 in response to PA1
+	- This completes RFR(A, B, PA1) status: complete
+
