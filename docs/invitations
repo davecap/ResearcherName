@@ -3,18 +3,22 @@ Invitation emails should contain informative stuff about the service as well as 
 
 # send this task to the GAE Queue
 send_invitation(from_user_id, to_email)
-	- if to_email has already been sent an invitation, ignore this task
-		- log as an error
+	- if to_email has already been sent an invitation, ignore + log error
+	- if the to_email is already validated, ignore + log error
 
 	- find publications where to_email is corresponding_email
 	- find information for from_user_id to include in template
 	- fill invitation template
 	- send
 
+
+
 user gets email with a link to join researcher.name
 if they click the link and sign up, their email address is already verified.
 
-/join?ik=INVITATION_KEY
+/account/email/verify?k=<UserEmail.key>
+    TODO: how to other sites do this?
+    - verify the key before
 
 name: _____
 email address: (set from the invitation object)

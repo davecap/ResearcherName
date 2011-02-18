@@ -12,6 +12,8 @@ To sign-up, enter your email address:
 					forgot your password? -> FORGOT PASSWORD
 		else:
 			- send an invitation email with secret key to verify the email address
+			    - secret key = md5(time+email) and saved to DB
+			
 
 # LOGIN
 	
